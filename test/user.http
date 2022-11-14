@@ -1,0 +1,18 @@
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "Caio",
+  "email": "caio@caio.com",
+	"password": "123456"
+}
+
+###
+
+POST http://localhost:8080/users/generate_token
+Content-Type: application/json
+
+{
+  "email": "caio@caio.com",
+	"password": "123456"
+}
