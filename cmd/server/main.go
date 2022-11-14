@@ -4,16 +4,31 @@ import (
 	"net/http"
 
 	"github.com/caiocp/go-api/configs"
+	_ "github.com/caiocp/go-api/docs"
 	"github.com/caiocp/go-api/internal/entities"
 	"github.com/caiocp/go-api/internal/infra/database"
 	"github.com/caiocp/go-api/internal/infra/webserver/handlers"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/jwtauth"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
+// @title Go Expert API Example
+// @description Product API with authentication
+// @version 1.0
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name Caio Carvalho
+// @contact.url github.com/caiocp
+
+// @host localhost:8080
+// @BasePath /
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 func main() {
 	configs, err := configs.LoadConfig(".")
 	if err != nil {
@@ -55,6 +70,8 @@ func main() {
 		r.Post("/", userHandler.CreateUser)
 		r.Post("/generate_token", userHandler.GetJWT)
 	})
+
+	r.Get("/docs/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/docs/doc.json")))
 
 	http.ListenAndServe(":8080", r)
 }
